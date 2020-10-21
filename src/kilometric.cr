@@ -128,7 +128,7 @@ module Kilometric
   end
 end
 
-get "/get" do |env|
+get "/metric" do |env|
   key = env.params.query["key"]
   type = env.params.query["type"]
   from = env.params.query["from"]? || "-"
@@ -147,7 +147,7 @@ get "/get" do |env|
   end
 end
 
-get "/set" do |env|
+get "/track" do |env|
   key = env.params.query["key"]
   value = env.params.query.has_key?("value") ? env.params.query["value"].to_u64 : 1u64
 

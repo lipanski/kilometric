@@ -4,14 +4,14 @@ A fast **stats aggregation** service written in Crystal using **Redis streams** 
 
 ## API
 
-### GET /set
+### GET /track
 
 Allows you to track events, which usually means incrementing a counter.
 
 **Track** an event:
 
 ```
-curl http://localhost:3000/set?key=my-metric
+curl http://localhost:3000/track?key=my-metric
 
 HTTP/1.1 204 No Content
 ```
@@ -19,19 +19,19 @@ HTTP/1.1 204 No Content
 **Track** an event **multiple times**:
 
 ```
-curl http://localhost:3000/set?key=my-metric&value=10
+curl http://localhost:3000/track?key=my-metric&value=10
 
 HTTP/1.1 204 No Content
 ```
 
-### GET /get
+### GET /metric
 
 Allows you to read aggregated data for a particular metric.
 
 **Count all values** of a metric:
 
 ```
-curl http://localhost:3000/get?key=my-metric&type=counter
+curl http://localhost:3000/metric?key=my-metric&type=counter
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -51,7 +51,7 @@ Content-Type: application/json
 **Count all values** of a metric for a **particular period of time**:
 
 ```
-curl http://localhost:3000/get?key=my-metric&type=counter&from=1603303544000&to=1603311712000
+curl http://localhost:3000/metric?key=my-metric&type=counter&from=1603303544000&to=1603311712000
 
 HTTP/1.1 200 OK   
 Content-Type: application/json
@@ -71,7 +71,7 @@ Content-Type: application/json
 **List all data points** of a metric in **sets of 60 seconds**:
 
 ```
-curl http://localhost:3000/get?key=my-metric&type=points 
+curl http://localhost:3000/metric?key=my-metric&type=points 
 
 HTTP/1.1 200 OK                                                                    
 Content-Type: application/json
@@ -107,7 +107,7 @@ Content-Type: application/json
 **List all data points** of a metric in **sets of a particular amount of seconds**:
 
 ```
-curl http://localhost:3000/get?key=my-metric&type=points&period=3600
+curl http://localhost:3000/metric?key=my-metric&type=points&period=3600
 
 HTTP/1.1 200 OK                                                                    
 Content-Type: application/json
@@ -143,7 +143,7 @@ Content-Type: application/json
 **List all data points** of a metric for a **particular period of time**::
 
 ```
-curl http://localhost:3000/get?key=my-metric&type=points&from=1603303544000&to=1603311712000
+curl http://localhost:3000/metric?key=my-metric&type=points&from=1603303544000&to=1603311712000
 
 HTTP/1.1 200 OK                                                                    
 Content-Type: application/json
