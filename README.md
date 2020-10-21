@@ -18,7 +18,7 @@ Transfer/sec:   1.09MB
 
 ## How does it work?
 
-Kilometric tracks events by incrementing internal counters inside a buffer and flushing them periodically (by default, every minute) to a Redis stream.
+Kilometric tracks events by incrementing internal counters inside a buffer and flushing them periodically (every minute) to a Redis stream.
 
 Redis streams are great for storing time series because:
 
