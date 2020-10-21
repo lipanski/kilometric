@@ -1,0 +1,25 @@
+name: kilometric
+version: 0.1.0
+
+authors:
+  - Florin Lipan <florinlipan@gmail.com>
+
+targets:
+  kilometric:
+    main: src/kilometric.cr
+
+crystal: 0.35.1
+
+license: MIT
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+    branch: master
+  mini_redis:
+    github: vladfaust/mini_redis
+
+development_dependencies:
+  sentry:
+    github: samueleaton/sentry
+    branch: master
