@@ -2,7 +2,7 @@
 
 A fast **stats aggregation** service written in Crystal using Redis streams as a data store.
 
-Kilometric can process **16 million writes in 10 minutes**: 
+Kilometric can process **1.6 million writes per minute**: 
 
 ```
 wrk -t 100 -c 100 -d 10m http://localhost:3000/track?key=my-metric 
