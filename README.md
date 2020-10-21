@@ -4,25 +4,25 @@ Store and consume metrics as Redis streams.
 
 ## API
 
-Increment a counter (by 1):
+**Increment a counter** by 1:
 
 ```sh
 curl -XPOST http://localhost:3000/api/counter/my-metric-name
 ```
 
-Increment a counter by a particular value:
+**Increment a counter** by a particular value:
 
 ```sh
 curl -XPOST http://localhost:3000/api/counter/my-metric-name?value=5
 ```
 
-Retrieve the value of a counter:
+**Read** the value of a **counter**:
 
 ```sh
 curl http://localhost:3000/api/counter/my-metric-name
 ```
 
-Retrieve the value of a counter for a specific period of time:
+**Read** the value of a **counter** for a particular period of time:
 
 ```sh
 curl http://localhost:3000/api/counter/my-metric-name?from=1603267106&to=1603268201
@@ -51,7 +51,7 @@ Run the server:
 You can **configure** the app with the following environment variables:
 
 - `KILOMETRIC_REDIS_URL`: Defaults to *redis://localhost:6379/0*.
-- `KILOMETRIC_REFRESH_RATE`: The desired rate at which buffered metrics should be pushed into Redis. Defaults to *60*.
+- `KILOMETRIC_REFRESH_RATE`: The rate at which buffered metrics should be pushed into Redis. Defaults to *60*.
 
 ## Development
 
