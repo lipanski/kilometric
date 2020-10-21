@@ -241,7 +241,7 @@ Content-Type: application/json
 
 ## Installation
 
-Compiled binaries are only available for Linux. Check the [releases](https://github.com/lipanski/kilometric/releases).
+Compiled binaries are available for Linux. Check the [releases](https://github.com/lipanski/kilometric/releases).
 
 ## Build from source
 
