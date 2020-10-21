@@ -1,31 +1,205 @@
 # Kilometric
 
-Store and consume metrics as Redis streams.
+A fast **stats aggregation** service written in Crystal using **Redis streams** as a data store.
 
 ## API
 
-**Increment a counter** by 1:
+### GET /set
 
-```sh
-curl -XPOST http://localhost:3000/v1/counter/my-metric-name
+Allows you to track events, which usually means incrementing a counter.
+
+**Track** an event:
+
+```
+curl http://localhost:3000/set?key=my-metric
+
+HTTP/1.1 204 No Content
 ```
 
-**Increment a counter** by a particular value:
+**Track** an event **multiple times**:
 
-```sh
-curl -XPOST http://localhost:3000/v1/counter/my-metric-name\?value=5
+```
+curl http://localhost:3000/set?key=my-metric&value=10
+
+HTTP/1.1 204 No Content
 ```
 
-**Read** the value of a **counter**:
+### GET /get
 
-```sh
-curl http://localhost:3000/v1/counter/my-metric-name
+Allows you to read aggregated data for a particular metric.
+
+**Count all values** of a metric:
+
+```
+curl http://localhost:3000/get?key=my-metric&type=counter
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "name": "my-metric",
+  "values": [
+    {
+      "from": 1603303544893,
+      "to": 1603311711070,
+      "value": 78
+    }
+  ]
+}
 ```
 
-**Read** the value of a **counter** for a particular period of time, using Unix timestamps:
+**Count all values** of a metric for a **particular period of time**:
 
-```sh
-curl http://localhost:3000/v1/counter/my-metric-name\?from=1603267106\&to=1603268201
+```
+curl http://localhost:3000/get?key=my-metric&type=counter&from=1603303544000&to=1603311712000
+
+HTTP/1.1 200 OK   
+Content-Type: application/json
+
+{
+  "name": "my-metric",
+  "values": [
+    {
+      "from": 1603303544893,
+      "to": 1603311711070,
+      "value": 78
+    }
+  ]
+}
+```
+
+**List all data points** of a metric in **sets of 60 seconds**:
+
+```
+curl http://localhost:3000/get?key=my-metric&type=points 
+
+HTTP/1.1 200 OK                                                                    
+Content-Type: application/json
+
+{
+  "name": "my-metric",
+  "values": [
+    {
+      "from": 1603304960760,
+      "value": 2
+    },
+    {
+      "from": 1603305134340,
+      "value": 4
+    },
+    {
+      "from": 1603305139380,
+      "value": 4
+    },
+    {
+      "from": 1603305167700,
+      "value": 6
+    },
+    {
+      "from": 1603305172680,
+      "value": 4
+    },
+    ...
+  ]
+}
+```
+
+**List all data points** of a metric in **sets of a particular amount of seconds**:
+
+```
+curl http://localhost:3000/get?key=my-metric&type=points&period=3600
+
+HTTP/1.1 200 OK                                                                    
+Content-Type: application/json
+
+{
+  "name": "my-metric",
+  "values": [
+    {
+      "from": 1603303542000,
+      "value": 4
+    },
+    {
+      "from": 1603303959600,
+      "value": 1
+    },
+    {
+      "from": 1603303963200,
+      "value": 3
+    },
+    {
+      "from": 1603304830800,
+      "value": 5
+    },
+    {
+      "from": 1603304838000,
+      "value": 1
+    },
+    ...
+  ]
+}
+```
+
+**List all data points** of a metric for a **particular period of time**::
+
+```
+curl http://localhost:3000/get?key=my-metric&type=points&from=1603303544000&to=1603311712000
+
+HTTP/1.1 200 OK                                                                    
+Content-Type: application/json
+
+{
+  "name": "my-metric",
+  "values": [
+    {
+      "from": 1603304960760,
+      "value": 2
+    },
+    {
+      "from": 1603305134340,
+      "value": 4
+    },
+    {
+      "from": 1603305139380,
+      "value": 4
+    },
+    {
+      "from": 1603305167700,
+      "value": 6
+    },
+    {
+      "from": 1603305172680,
+      "value": 4
+    },
+    ...
+  ]
+}
+```
+
+### GET /health
+
+Provides a health check.
+
+If everything goes **fine**:
+
+```
+curl http://localhost:3000/health
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"status":"ok"}
+```
+
+If something went wrong (e.g. the background processing was halted):
+
+```
+curl http://localhost:3000/health
+
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/json
+
+{"status":"error"}
 ```
 
 ## Installation
@@ -36,10 +210,10 @@ curl http://localhost:3000/v1/counter/my-metric-name\?from=1603267106\&to=160326
 shards install
 ```
 
-**Build** the binary:
+**Build** the binary for release:
 
 ```sh
-crystal build src/kilometric.cr
+crystal build --release src/kilometric.cr
 ```
 
 **Run** the server on port 3000:
