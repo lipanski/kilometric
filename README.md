@@ -2,7 +2,7 @@
 
 A fast **stats aggregation** service written in Crystal using **Redis streams** as a data store.
 
-Kilometric can process **3 million writes in 5 minutes** with a very small dent in your Redis memory: 
+Kilometric can process **3 million writes in 5 minutes** with a very small dent to your Redis memory: 
 
 ```
 wrk -t 100 -c 100 -d 5m http://localhost:3000/track?key=my-metric 
@@ -15,6 +15,18 @@ Running 5m test @ http://localhost:3000/track?key=my-metric
 Requests/sec:   9896.38
 Transfer/sec:   1.09MB
 ```
+
+## How does it work?
+
+Kilometric tracks events by incrementing internal counters inside a buffer and flushing them periodically (by default, every minute) to a Redis stream.
+
+Redis streams are great for storing time series because:
+
+- They assign a Unix timestamp to every piece of data.
+- They are sorted chronologically.
+- They are fast to slice and read.
+- They are storage-efficient.
+- You can contain their size easily either with your `maxmemory_policy` or with `XTRIM`.
 
 ## API
 
@@ -241,7 +253,9 @@ crystal build --release src/kilometric.cr
 ./kilometric
 ```
 
-You can **configure** the app with the following environment variables:
+## Configuration
+
+You can **configure** the app with the following **environment variables**:
 
 - `KILOMETRIC_REDIS_URL`: Defaults to *redis://localhost:6379/0*.
 - `KILOMETRIC_FLUSH_INTERVAL`: The rate in seconds at which buffered metrics will be flushed into Redis. Defaults to *60*.
