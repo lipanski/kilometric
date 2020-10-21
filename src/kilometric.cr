@@ -10,6 +10,10 @@ module Kilometric
     @@refresh_rate ||= Int32.new(ENV.fetch("KILOMETRIC_REFRESH_RATE", "60"))
   end
 
+  def self.port
+    @@port ||= Int32.new(ENV.fetch("KILOMETRIC_PORT", "3000"))
+  end
+
   class RedisStore
     def initialize(redis_url : String)
       @redis = MiniRedis.new(uri: URI.parse(redis_url))
@@ -51,7 +55,7 @@ module Kilometric
   end
 end
 
-get "/api/counter/:metric" do |env|
+get "/v1/counter/:metric" do |env|
   metric = env.params.url["metric"]
   from = env.params.query["from"]? || "-"
   to = env.params.query["to"]? || "+"
@@ -59,11 +63,13 @@ get "/api/counter/:metric" do |env|
   Kilometric.store.counter(metric, from, to).to_s
 end
 
-post "/api/counter/:metric" do |env|
+post "/v1/counter/:metric" do |env|
   metric = env.params.url["metric"]
   value = env.params.query["value"]?
 
   Kilometric.store.increment(metric, value)
+
+  env.response.status = HTTP::Status::NO_CONTENT
 end
 
 spawn do
@@ -73,5 +79,5 @@ spawn do
   end
 end
 
-Kemal.run
+Kemal.run(Kilometric.port)
 

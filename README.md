@@ -7,42 +7,42 @@ Store and consume metrics as Redis streams.
 **Increment a counter** by 1:
 
 ```sh
-curl -XPOST http://localhost:3000/api/counter/my-metric-name
+curl -XPOST http://localhost:3000/v1/counter/my-metric-name
 ```
 
 **Increment a counter** by a particular value:
 
 ```sh
-curl -XPOST http://localhost:3000/api/counter/my-metric-name\?value=5
+curl -XPOST http://localhost:3000/v1/counter/my-metric-name\?value=5
 ```
 
 **Read** the value of a **counter**:
 
 ```sh
-curl http://localhost:3000/api/counter/my-metric-name
+curl http://localhost:3000/v1/counter/my-metric-name
 ```
 
-**Read** the value of a **counter** for a particular period of time:
+**Read** the value of a **counter** for a particular period of time, using Unix timestamps:
 
 ```sh
-curl http://localhost:3000/api/counter/my-metric-name\?from=1603267106\&to=1603268201
+curl http://localhost:3000/v1/counter/my-metric-name\?from=1603267106\&to=1603268201
 ```
 
 ## Installation
 
-Install dependencies:
+**Install** dependencies:
 
 ```sh
 shards install
 ```
 
-Build the binary:
+**Build** the binary:
 
 ```sh
 crystal build src/kilometric.cr
 ```
 
-Run the server:
+**Run** the server on port 3000:
 
 ```sh
 ./kilometric
@@ -52,6 +52,7 @@ You can **configure** the app with the following environment variables:
 
 - `KILOMETRIC_REDIS_URL`: Defaults to *redis://localhost:6379/0*.
 - `KILOMETRIC_REFRESH_RATE`: The rate at which buffered metrics should be pushed into Redis. Defaults to *60*.
+- `KILOMETRIC_PORT`: The web port to use. Default to *3000*.
 
 ## Development
 
