@@ -128,7 +128,7 @@ module Kilometric
   end
 end
 
-get "/metric" do |env|
+get "/read" do |env|
   key = env.params.query["key"]
   type = env.params.query["type"]
   from = env.params.query["from"]? || "-"

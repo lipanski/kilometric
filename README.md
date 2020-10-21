@@ -24,14 +24,14 @@ curl http://localhost:3000/track?key=my-metric&value=10
 HTTP/1.1 204 No Content
 ```
 
-### GET /metric
+### GET /read
 
 Allows you to read aggregated data for a particular metric.
 
 **Count all values** of a metric:
 
 ```
-curl http://localhost:3000/metric?key=my-metric&type=counter
+curl http://localhost:3000/read?key=my-metric&type=counter
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -51,9 +51,9 @@ Content-Type: application/json
 **Count all values** of a metric for a **particular period of time**:
 
 ```
-curl http://localhost:3000/metric?key=my-metric&type=counter&from=1603303544000&to=1603311712000
+curl http://localhost:3000/read?key=my-metric&type=counter&from=1603303544000&to=1603311712000
 
-HTTP/1.1 200 OK   
+HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -71,9 +71,9 @@ Content-Type: application/json
 **List all data points** of a metric in **sets of 60 seconds**:
 
 ```
-curl http://localhost:3000/metric?key=my-metric&type=points 
+curl http://localhost:3000/read?key=my-metric&type=points
 
-HTTP/1.1 200 OK                                                                    
+HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -107,9 +107,9 @@ Content-Type: application/json
 **List all data points** of a metric in **sets of a particular amount of seconds**:
 
 ```
-curl http://localhost:3000/metric?key=my-metric&type=points&period=3600
+curl http://localhost:3000/read?key=my-metric&type=points&period=3600
 
-HTTP/1.1 200 OK                                                                    
+HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -143,9 +143,9 @@ Content-Type: application/json
 **List all data points** of a metric for a **particular period of time**::
 
 ```
-curl http://localhost:3000/metric?key=my-metric&type=points&from=1603303544000&to=1603311712000
+curl http://localhost:3000/read?key=my-metric&type=points&from=1603303544000&to=1603311712000
 
-HTTP/1.1 200 OK                                                                    
+HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
