@@ -1,24 +1,31 @@
 # Kilometric
 
-A fast **stats aggregation** service written in Crystal using **Redis streams** as a data store.
+A fast **stats aggregation** service written in Crystal using Redis streams as a data store.
 
-Kilometric can process **3 million writes in 5 minutes** with a very small dent to your Redis memory: 
+Kilometric can process **16 million writes in 10 minutes**: 
 
 ```
-wrk -t 100 -c 100 -d 5m http://localhost:3000/track?key=my-metric 
-Running 5m test @ http://localhost:3000/track?key=my-metric
+wrk -t 100 -c 100 -d 10m http://localhost:3000/track?key=my-metric 
+Running 10m test @ http://localhost:3000/track?key=my-metric
   100 threads and 100 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    11.63ms   19.76ms 713.52ms   98.82%
-    Req/Sec    99.73     30.23     4.34k    95.75%
-  2969908 requests in 5.00m, 328.55MB read
-Requests/sec:   9896.38
-Transfer/sec:   1.09MB
+    Latency     4.01ms    4.61ms 191.65ms   97.57%
+    Req/Sec   277.74    109.17    16.65k    94.74%
+  16591245 requests in 10.00m, 1.79GB read
+Requests/sec:  27647.49
+Transfer/sec:  3.06MB
+```
+
+...with a very small dent to your Redis memory:
+
+```
+used_memory:876352 # Before (Bytes)
+used_memory:877392 # After
 ```
 
 ## How does it work?
 
-Kilometric tracks events by incrementing internal counters inside a buffer and flushing them periodically (every minute) to a Redis stream.
+Kilometric tracks events by incrementing internal counters inside a buffer and flushing them periodically (every 10 seconds) to a Redis stream.
 
 Redis streams are great for storing time series because:
 
@@ -258,7 +265,7 @@ crystal build --release src/kilometric.cr
 You can **configure** the app with the following **environment variables**:
 
 - `KILOMETRIC_REDIS_URL`: Defaults to *redis://localhost:6379/0*.
-- `KILOMETRIC_FLUSH_INTERVAL`: The rate in seconds at which buffered metrics will be flushed into Redis. Defaults to *60*.
+- `KILOMETRIC_FLUSH_INTERVAL`: The rate in seconds at which buffered metrics will be flushed into Redis. Defaults to *10*.
 - `KILOMETRIC_PORT`: The web port to use. Defaults to *3000*.
 
 ## Development

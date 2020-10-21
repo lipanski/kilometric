@@ -8,7 +8,7 @@ module Kilometric
   end
 
   def self.flush_interval
-    @@flush_interval ||= Int32.new(ENV.fetch("KILOMETRIC_FLUSH_INTERVAL", "60"))
+    @@flush_interval ||= Int32.new(ENV.fetch("KILOMETRIC_FLUSH_INTERVAL", "10"))
   end
 
   def self.port
@@ -127,6 +127,8 @@ module Kilometric
     end
   end
 end
+
+logging false
 
 get "/read" do |env|
   key = env.params.query["key"]
