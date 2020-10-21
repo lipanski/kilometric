@@ -2,6 +2,20 @@
 
 A fast **stats aggregation** service written in Crystal using **Redis streams** as a data store.
 
+Kilometric can process **3 million writes in 5 minutes** with a very small dent in your Redis memory: 
+
+```
+wrk -t 100 -c 100 -d 5m http://localhost:3000/track?key=my-metric 
+Running 5m test @ http://localhost:3000/track?key=my-metric
+  100 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    11.63ms   19.76ms 713.52ms   98.82%
+    Req/Sec    99.73     30.23     4.34k    95.75%
+  2969908 requests in 5.00m, 328.55MB read
+Requests/sec:   9896.38
+Transfer/sec:   1.09MB
+```
+
 ## API
 
 ### GET /track
@@ -201,6 +215,11 @@ Content-Type: application/json
 
 {"status":"error"}
 ```
+
+## Requirements
+
+- Redis 5+
+- Crystal 0.35+
 
 ## Installation
 
