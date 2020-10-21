@@ -51,18 +51,12 @@ crystal build src/kilometric.cr
 You can **configure** the app with the following environment variables:
 
 - `KILOMETRIC_REDIS_URL`: Defaults to *redis://localhost:6379/0*.
-- `KILOMETRIC_REFRESH_RATE`: The rate at which buffered metrics should be pushed into Redis. Defaults to *60*.
-- `KILOMETRIC_PORT`: The web port to use. Default to *3000*.
+- `KILOMETRIC_FLUSH_INTERVAL`: The rate in seconds at which buffered metrics will be flushed into Redis. Defaults to *60*.
+- `KILOMETRIC_PORT`: The web port to use. Defaults to *3000*.
 
 ## Development
 
-Install shards:
-
-```sh
-shards install
-```
-
-Build `sentry` to refresh your server on code changes:
+Build the `sentry` tool (refresh your server on code changes):
 
 ```sh
 crystal build lib/sentry/src/sentry_cli.cr -o sentry
@@ -71,5 +65,5 @@ crystal build lib/sentry/src/sentry_cli.cr -o sentry
 Run your app via `sentry` to watch for code changes:
 
 ```sh
-sentry
+./sentry
 ```
