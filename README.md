@@ -13,7 +13,7 @@ curl -XPOST http://localhost:3000/api/counter/my-metric-name
 **Increment a counter** by a particular value:
 
 ```sh
-curl -XPOST http://localhost:3000/api/counter/my-metric-name?value=5
+curl -XPOST http://localhost:3000/api/counter/my-metric-name\?value=5
 ```
 
 **Read** the value of a **counter**:
@@ -25,7 +25,7 @@ curl http://localhost:3000/api/counter/my-metric-name
 **Read** the value of a **counter** for a particular period of time:
 
 ```sh
-curl http://localhost:3000/api/counter/my-metric-name?from=1603267106&to=1603268201
+curl http://localhost:3000/api/counter/my-metric-name\?from=1603267106\&to=1603268201
 ```
 
 ## Installation
