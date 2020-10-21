@@ -224,7 +224,7 @@ Content-Type: application/json
 {"status":"ok"}
 ```
 
-If something went wrong (e.g. the background processing was halted):
+If something went **wrong** (e.g. the background processing was halted):
 
 ```
 curl http://localhost:3000/health
@@ -238,9 +238,14 @@ Content-Type: application/json
 ## Requirements
 
 - Redis 5+
-- Crystal 0.35+
 
 ## Installation
+
+Compiled binaries are only available for Linux. Check the [releases](https://github.com/lipanski/kilometric/releases).
+
+## Build from source
+
+You'll need Crystal 0.35+ before getting started.
 
 **Install** dependencies:
 
@@ -270,13 +275,13 @@ You can **configure** the app with the following **environment variables**:
 
 ## Development
 
-Build the `sentry` tool (refresh your server on code changes):
+Build the `sentry` tool (refreshes your server on code changes):
 
 ```sh
 crystal build lib/sentry/src/sentry_cli.cr -o sentry
 ```
 
-Run your app via `sentry` to watch for code changes:
+Run the app with `sentry`:
 
 ```sh
 ./sentry
