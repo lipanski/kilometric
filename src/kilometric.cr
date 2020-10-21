@@ -100,7 +100,7 @@ module Kilometric
       # TODO
     end
 
-    def flush!
+    def flush
       @buffer.each_key do |key|
         value = @buffer.delete(key)
         next if value.nil? || value.zero?
@@ -170,11 +170,18 @@ end
 
 spawn do
   loop do
-    Kilometric.store.flush!
+    Kilometric.store.flush
     Kilometric.update_last_flushed_at
     sleep(Kilometric.flush_interval)
   end
 end
 
-Kemal.run(Kilometric.port)
+Kemal.run(Kilometric.port) do |config|
+  Signal::INT.trap do
+    puts "Shutting down..."
+    Kilometric.store.flush
+    Kemal.stop
+    exit
+  end
+end
 
