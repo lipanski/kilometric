@@ -24,3 +24,7 @@ shards:
     git: https://github.com/samueleaton/sentry.git
     version: 0.3.2+git.commit.edcafd89be2658a4bd306ca1096ef9918c727edf
 
+  spec-kemal:
+    git: https://github.com/kemalcr/spec-kemal.git
+    version: 0.5.0+git.commit.64b89c719234ceb92c0a14762dce3afc6257fffc
+

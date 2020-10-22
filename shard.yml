@@ -23,3 +23,6 @@ development_dependencies:
   sentry:
     github: samueleaton/sentry
     branch: master
+  spec-kemal:
+    github: kemalcr/spec-kemal
+    branch: master

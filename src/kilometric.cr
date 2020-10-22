@@ -8,19 +8,25 @@ module Kilometric
   end
 
   def self.flush_interval
-    @@flush_interval ||= Int32.new(ENV.fetch("KILOMETRIC_FLUSH_INTERVAL", "10"))
+    @@flush_interval ||= UInt32.new(ENV.fetch("KILOMETRIC_FLUSH_INTERVAL", "10"))
+  end
+
+  def self.flush_interval=(value : UInt32)
+    @@flush_interval = value
   end
 
   def self.port
     @@port ||= Int32.new(ENV.fetch("KILOMETRIC_PORT", "3000"))
   end
 
+  @@last_flushed_at : Time = Time.utc
+
   def self.last_flushed_at : Time
-    @@last_flushed_at || Time::UNIX_EPOCH
+    @@last_flushed_at
   end
 
-  def self.update_last_flushed_at
-    @@last_flushed_at = Time.utc
+  def self.last_flushed_at=(value : Time)
+    @@last_flushed_at = value
   end
 
   class Metric(T)
@@ -58,7 +64,7 @@ module Kilometric
       @namespace = "kilometric"
     end
 
-    def write(key : String, value : UInt64)
+    def track(key : String, value : UInt64)
       @buffer[key] ||= 0u64
       @buffer[key] += value
     end
@@ -153,7 +159,7 @@ get "/track" do |env|
   key = env.params.query["key"]
   value = env.params.query.has_key?("value") ? env.params.query["value"].to_u64 : 1u64
 
-  Kilometric.store.write(key, value)
+  Kilometric.store.track(key, value)
 
   env.response.status = HTTP::Status::NO_CONTENT
 end
@@ -171,17 +177,19 @@ end
 spawn do
   loop do
     Kilometric.store.flush
-    Kilometric.update_last_flushed_at
+    Kilometric.last_flushed_at = Time.utc
     sleep(Kilometric.flush_interval)
   end
 end
 
 Kemal.run(Kilometric.port) do |config|
   Signal::INT.trap do
-    puts "Shutting down..."
-    Kilometric.store.flush
+    puts "", "### Shutting down..."
     Kemal.stop
+    Kilometric.store.flush
     exit
   end
+
+  puts "### Kilometric is running on port #{Kilometric.port}"
 end
 
