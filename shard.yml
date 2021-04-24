@@ -8,7 +8,7 @@ targets:
   kilometric:
     main: src/kilometric.cr
 
-crystal: 0.35.1
+crystal: 1.0.0
 
 license: MIT
 
@@ -18,6 +18,8 @@ dependencies:
     branch: master
   mini_redis:
     github: vladfaust/mini_redis
+  logger:
+    github: crystal-lang/logger.cr
 
 development_dependencies:
   sentry:

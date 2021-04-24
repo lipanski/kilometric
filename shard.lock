@@ -1,16 +1,24 @@
 version: 2.0
 shards:
+  backtracer:
+    git: https://github.com/sija/backtracer.cr.git
+    version: 1.2.1
+
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git
-    version: 0.1.4
+    version: 0.2.0
 
   kemal:
     git: https://github.com/kemalcr/kemal.git
-    version: 0.26.1+git.commit.a819d4792bbc63d993d6dd2b15f9af5efb0c2d8c
+    version: 1.0.0+git.commit.218be2422172d330feb62c6a8abc7df5402fdb84
 
   kilt:
     git: https://github.com/jeromegn/kilt.git
-    version: 0.4.0
+    version: 0.6.1
+
+  logger:
+    git: https://github.com/crystal-lang/logger.cr.git
+    version: 0.1.0
 
   mini_redis:
     git: https://github.com/vladfaust/mini_redis.git
@@ -18,7 +26,7 @@ shards:
 
   radix:
     git: https://github.com/luislavena/radix.git
-    version: 0.3.9
+    version: 0.4.1
 
   sentry:
     git: https://github.com/samueleaton/sentry.git
@@ -26,5 +34,5 @@ shards:
 
   spec-kemal:
     git: https://github.com/kemalcr/spec-kemal.git
-    version: 0.5.0+git.commit.64b89c719234ceb92c0a14762dce3afc6257fffc
+    version: 0.5.0+git.commit.88a56be7eda0a7f102a3e3f20cc492816581176a
 
